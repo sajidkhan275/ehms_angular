@@ -1,0 +1,110 @@
+<div class="container-fluid">
+    <div class="row p-2 bg-info">
+        <div class="col-6">
+            <h3>Employee List</h3>
+        </div>
+        <div class="col-6 text-end">
+            <button class="btn btn-warning" (click)="openAddDialog()">Add New Employee</button>
+        </div>
+    </div>
+
+    <table *ngIf="list.length > 0" class="table table-striped table-bordered">
+        <thead>
+            <tr>
+                <th (click)="sortTable('employeeName')">Employee Name<span *ngIf="sortColumn === 'employeeName'">{{
+                        sortDirection === 'asc' ? '🔼' : '🔽' }}</span></th>
+                <th (click)="sortTable('employeeCode')">employeeCode<span *ngIf="sortColumn === 'employeeCode'">{{
+                        sortDirection === 'asc' ? '🔼' : '🔽' }}</span></th>
+                <th (click)="sortTable('departmentName')">departmentName<span *ngIf="sortColumn === 'departmentName'">{{
+                        sortDirection === 'asc' ? '🔼' : '🔽' }}</span></th>
+                <th (click)="sortTable('jobTitle')">jobTitle<span *ngIf="sortColumn === 'jobTitle'">{{ sortDirection ===
+                        'asc' ? '🔼' : '🔽' }}</span></th>
+                <th class="text-center">Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let data of list | paginate: { itemsPerPage: itemsPerPage, currentPage: page }">
+                <td>{{ data.employeeName }}</td>
+                <td>{{ data.employeeCode }}</td>
+                <td>{{ data.departmentName }}</td>
+                <td>{{ data.jobTitle }}</td>
+                <td class="text-center">
+                    <button class="btn btn-warning" (click)="openEditDialog(data)">Edit</button> ||
+                    <button class="btn btn-danger" (click)="deleteEmployee(data.empId)">Delete</button>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <pagination-controls (pageChange)="page = $event" [responsive]="true" [autoHide]="true">
+    </pagination-controls>
+</div>
+
+<div class="modal fade" id="myModal" tabindex="-1" aria-labelledby="fitnessModalLabel"  [ngClass]="{ show: showModal }"
+[ngStyle]="{ display: showModal ? 'block' : 'none', backgroundColor: 'rgba(0, 0, 0, 0.5)' }"  role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="fitnessModalLabel">{{ isEdit ? 'Edit' : 'Add New' }} Employee</h5>
+                <button type="button" class="btn-close"  aria-label="Close" (click)="closeModal()" ></button>
+            </div>
+            <form #employeeForm="ngForm" (ngSubmit)="saveEmployee(employeeForm)">
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label for="employeeName" class="form-label">employee Name</label>
+                        <input type="text" id="employeeName" class="form-control"  [(ngModel)]="currentData.employeeName"
+                         name="employeeName" required #employeeName="ngModel"/> 
+                         <div *ngIf="employeeName.invalid && (employeeName.dirty || employeeName.touched)" class="text-danger">
+                            <div *ngIf="employeeName.errors?.['required']">
+                                <small>employee Name  is required.</small>
+                            </div>
+                        </div>                        
+                    </div>
+                    <div class="mb-3">
+                        <label for="employeeCode" class="form-label">employeeCode</label>
+                        <input type="text" id="employeeCode" class="form-control"  [(ngModel)]="currentData.employeeCode"
+                         name="employeeCode" required    #employeeCode="ngModel"/>       
+                         <div *ngIf="employeeCode.invalid && (employeeCode.dirty || employeeCode.touched)" class="text-danger">
+                            <div *ngIf="employeeCode.errors?.['required']">
+                                <small>employeeCode  is required.</small>
+                            </div>
+                        </div>                
+                    </div>
+                    <div class="mb-3">
+                        <label for="email" class="form-label">email</label>
+                        <input type="text" id="email" class="form-control"  [(ngModel)]="currentData.email"
+                         name="email" required    #email="ngModel"/>       
+                         <div *ngIf="email.invalid && (email.dirty || email.touched)" class="text-danger">
+                            <div *ngIf="email.errors?.['required']">
+                                <small>email  is required.</small>
+                            </div>
+                        </div>                
+                    </div>
+                    <div class="mb-3">
+                        <label for="departmentName" class="form-label">Select Department</label>
+                        <select class="form-control" [(ngModel)]="currentData.departmentId" name="DepartmentId" required #department="ngModel">
+                            <option value="0">-- Select a Department --</option>
+                            <option *ngFor="let dept of departmentList" [value]="dept.departmentId">{{ dept.departmentName }}</option>
+                        </select>   
+                        <div *ngIf="department.invalid && (department.dirty || department.touched)" class="text-danger">
+                            <small *ngIf="department.errors?.['required']">Please select a department.</small>
+                          </div>         
+                    </div>
+                    <div class="mb-3">
+                        <label for="jobTitle" class="form-label">jobTitle</label>
+                        <input type="text" id="jobTitle" class="form-control"  [(ngModel)]="currentData.jobTitle"
+                         name="jobTitle" required    #jobTitle="ngModel"/>       
+                         <div *ngIf="jobTitle.invalid && (jobTitle.dirty || jobTitle.touched)" class="text-danger">
+                            <div *ngIf="jobTitle.errors?.['required']">
+                                <small>jobTitle  is required.</small>
+                            </div>
+                        </div>                
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary"  data-bs-dismiss="modal" (click)="closeModal()">Cancel</button>
+                    <button type="submit" class="btn btn-success"  [disabled]="employeeForm.invalid"  >Save</button>
+                </div>
+                </form>
+        </div>
+    </div>
+</div>

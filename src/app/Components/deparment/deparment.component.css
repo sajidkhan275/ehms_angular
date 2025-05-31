@@ -1,0 +1,33 @@
+.modal.fade.show {
+    display: block;
+    opacity: 1;
+    transition: opacity 0.3s ease-in-out;
+  }
+  
+  .modal.fade {
+    opacity: 0;
+  }
+  
+  .modal-dialog {
+    margin: 10% auto;
+  }
+  
+  .modal-backdrop {
+    background-color: rgba(0, 0, 0, 0.5);
+  }
+
+  th {
+    cursor: pointer;
+  }
+  th span {
+    margin-left: 5px;
+    color: gray;
+  }
+  
+  th:hover {
+    background-color: #f0f0f0;
+  }  
+
+  pagination-controls {
+    margin-top: 10px;
+  }

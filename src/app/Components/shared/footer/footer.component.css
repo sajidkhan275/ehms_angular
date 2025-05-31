@@ -1,0 +1,24 @@
+.footer {
+  background-color: #343a40; /* Dark background */
+  color: white; /* White text */
+  padding: 15px 0; /* Add padding for spacing */
+  box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1); /* Subtle shadow for separation */
+}
+
+.footer .list-unstyled {
+  display: flex; /* Align links horizontally */
+  gap: 15px; /* Add space between links */
+}
+
+.footer a {
+  color: #ddd; /* Slightly lighter than white for contrast */
+  transition: color 0.3s ease; /* Smooth transition for hover effect */
+}
+
+.footer a:hover {
+  color: #ffffff; /* Pure white on hover */
+}
+
+.footer span {
+  font-size: 0.9rem; /* Adjust font size for subtle look */
+}
